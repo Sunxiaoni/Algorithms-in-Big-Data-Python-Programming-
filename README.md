@@ -1,8 +1,6 @@
 # Algorithms-in-Big-Data-Python-Programming-
 This repository will be updated regularly for my good-practice coding files in terms of algorithms, such as Leetcode, etc.
 
-## Exercises: 
-
 ### Exercise 1
 
 City Council for City 'X' has decided to only give 10 parking passes on a first come basis for a busy street in City 'X'. The parking passes will only be provided on alternate working days of the week (Monday,Wednesday,Friday). Write a function that provides only one parking pass from the below list at a time whenever called in the program. Once a parking pass is issued it cannot be reused.
