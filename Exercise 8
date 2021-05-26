@@ -1,0 +1,72 @@
+s1 = 'aab'
+s2 = 'c*a*b'
+
+def s1_in_s2(s1,s2):
+    l1 = len(s1)
+    l2 = len(s2)
+    length = l2-l1
+    for i in range(length+1):
+        flag = 1
+        for j in range(l1):
+            if(s2[i+j] == '.'):
+                continue
+            if(s2[i+j] != s1[j]):
+                flag = 0
+        if(flag == 1):
+            return True
+    return False
+
+
+
+def matching(s1,s2):
+    if(len(s2) > 4 or len(s1) > 4):
+        return 'Wrong input'
+    pos_xing = []
+    for i in range(len(s2)):
+        if(s2[i] == '*'):
+            pos_xing.append(i)
+    s = []
+    if(len(pos_xing) == 0):
+        s.append(s2)
+    if(len(pos_xing) == 1):
+        for i in range(4):    
+            s.append(s2[:pos_xing[0]]+s2[pos_xing[0]-1]*i + s2[pos_xing[0]+1:])
+    
+
+    if(len(pos_xing) == 2):
+        for i in range(4):
+            for j in range(4):
+                tmp = s2[:pos_xing[0]] + s2[pos_xing[0]-1]*i
+                tmp += s2[pos_xing[0]+1:pos_xing[1]] + s2[pos_xing[1]-1]*j+s2[pos_xing[1]+1:]
+                s.append(tmp)
+        
+#    print(s)
+
+    for item in s:
+        if(s1_in_s2(s1,item) == True):
+            return 'True'
+    
+    return 'False'
+    
+    
+
+
+while(True):
+    
+    s1 = input('please input s1:')
+    if(s1 == 'exit'):
+        break
+    s2 = input('please input s2:')
+
+    print(matching(s1, s2))
+
+
+
+
+# =============================================================================
+# S1 = "aba" , S2 = "*ab" => false
+# S1 = "aa" , S2 = "a*" => true
+# S1 = "ab" , S2 = ".*" => true
+# S1 = "ab", S2 = "." => false
+# S1 = "aab" , S2 = "c*a*b" => true S1 = "aaa" , S2 = "a*" => true
+# =============================================================================
