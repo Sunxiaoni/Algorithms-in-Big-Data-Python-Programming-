@@ -1,0 +1,99 @@
+str_info = """**************************************************
+Welcome to the hospital management system in Stuttgart
+please choose your action
+1. Add new hospital info.
+2. Show hospital info.
+3. Search hospital info
+4. Change hospital info
+
+0. Quite
+**************************************************"""
+hospitals = [
+    {'name': 'Hospital A', 'doctor number': '15', 'nurse number': '30', 'bed number': '100', 'medical speciality': 'orthopedic, cardiac'},
+    {'name': 'Hospital B', 'doctor number': '15', 'nurse number': '30', 'bed number': '100', 'medical speciality': 'general medicine,neurosurgery'}
+
+]
+
+# input
+while True:
+    print(str_info)
+    action = input("what you would like to check: ")
+    # 0, quite
+    if action == '0':
+        break
+    elif action == '1':
+    # 1, add new
+        name = input("please input hospital name: ")
+        doctor = int(input("please input doctor number: "))
+        nurse = int(input("please input nurse number: "))
+        bed = int(input("please input bed number: "))
+        if bed >= 15:
+            bed = int(input("please input bed number: "))
+        else:
+            bed = 15
+        medical = input("please input medical speciality: ")
+
+        d = {
+            'name': name.strip(),
+            "doctor number": doctor,
+            "nurse": nurse,
+            'beds': bed,
+            'medical speciality': medical
+        }
+
+        hospitals.append(d)
+
+    elif action == '2':
+     # 2, Show hospital info.
+        print('hospital\tdoctor\tnurse\tbed\t\tmedical speciality')
+        for hospital in hospitals:
+
+            print('{}\t{}\t\t{}\t\t{}\t\t{}'.format(*hospital.values()))
+
+    elif action == '3':
+    # 3, Search hospital info
+        name = input("please input hospital name：")
+
+        for hospital in hospitals:
+
+            if name == hospital['name']:
+                print('hospital name\tdoctor number\tnurse number\tbed number\tmedical speciality')
+                print('{}\t{}\t\t{}\t\t{}\t\t{}'.format(*hospital.values()))
+
+                break
+        else:
+
+            print('can not find {} information，please check!'.format(name))
+
+    elif action == '4':
+    # 4. Change hospital info
+        name = input("please input which hospital you want to change information：")
+
+        for hospital in hospitals:
+            if name == hospital['name']:
+                doctor = input("please update doctor number: ")
+                if doctor:
+                    hospital['doctor number'] = int(doctor)
+                nurse = input("please update nurse number: ")
+                if nurse:
+                    hospital['nurse number'] = int(nurse)
+                bed = input("please update bed number: ")
+                if bed:
+                    n = int(bed)
+                    if n >= 15:
+                        hospital['bed number'] = int(bed)
+                medical = input('please add medical speciality: ')
+                if medical:
+                    m = hospital['medical speciality']
+                    t = str(medical)
+                    b = m,t
+                    h = (', '.join(map(str, b)))
+                    hospital['medical speciality'] = h
+
+
+                break
+        else:
+            print('can not find {} information，please check'.format(name))
+    else:
+        print('please input correct action number')
+
