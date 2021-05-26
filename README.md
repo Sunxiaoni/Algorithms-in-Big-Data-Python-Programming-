@@ -85,8 +85,9 @@ S1 = "aba" , S2 = "*ab" => false
 S1 = "aa" , S2 = "a*" => true
 S1 = "ab" , S2 = ".*" => true
 S1 = "ab", S2 = "." => false
+S1 = "aab" , S2 = "c*a*b" => true S1 = "aaa" , S2 = "a*" => true
 
 ### Exercise 9
 
 Development and enhancement of the performance of python library GNE
-S1 = "aab" , S2 = "c*a*b" => true S1 = "aaa" , S2 = "a*" => true
+
