@@ -1,0 +1,16 @@
+# # email = 'user@example.com'
+import re
+
+action = input('please input your email address: ')
+email = str(action)
+print(email)
+
+name = re.split('[@.]', email)[0]
+domain = email.split('.')[1]
+subdomain = re.split('[@.]', email)[1]
+
+for e in email:
+    e = '{}@{}.{}'.format(name, subdomain, domain)
+
+print('domain:', domain)
+print('subdomain:', subdomain)
