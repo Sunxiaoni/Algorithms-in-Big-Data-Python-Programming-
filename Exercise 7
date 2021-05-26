@@ -1,0 +1,217 @@
+import random
+# 8 cards for 8 characters, each character has 4 characteristics
+card_data = [
+    ['1', 'Snow White', '5', '4', '2', '2'],
+    ['2', 'Sleeping Beauty', '7', '5', '1', '5'],
+    ['3', 'Cinderella', '9', '3', '8', '7'],
+    ['4', 'The Little Mermaid', '6', '7', '10', '1'],
+    ['5', 'Hua Mulan', '8', '10', '9', '6'],
+    ['6', 'Aladdin', '4', '6', '3', '9'],
+    ['7', 'ELsa', '3', '8', '4', '4'],
+    ['8', 'Merida', '1', '9', '5', '3'],
+]
+
+# Special cards of ressureection and god spell are relevant with players
+# Resurrection card, in a list
+class Resurrection:
+    chars = []
+
+    # Use @classmethod decorator invoke class card, and the cards are from the
+    @classmethod
+    def add_resurrection_card(cls, card):
+        cls.chars.append(card)
+
+    # Use @classmethod decorator invoke class player, select a card
+    @classmethod
+    def select_card_by_no(cls, person):
+        no = input(f'Resurrect Speel, {person.name} please select card number: ({",".join([card.no for card in cls.chars])})：')
+        return cls.search_card_by_no(no)
+
+        # Player select by card number (in the assignment is select by random number, does not make so much sense:)
+    @classmethod
+    def search_card_by_no(cls, card_no):
+        for card in cls.chars:
+            if card.no == card_no:
+                cls.chars.remove(card)
+                return card
+
+# God spell, can choose any card for other person
+# Use @classmethod decorator invoke class player
+class God:
+    @classmethod
+    def hand_od_god(cls, other_person):
+        no = input(f'please select card no. for {other_person.name}: ({",".join([card.no for card in other_person.chars])})：')
+        return other_person.search_card_by_no(no)
+
+# Dice, random 1 to 6
+class Dice:
+    @staticmethod
+    def dice():
+        return random.randint(1, 6)
+
+# card class, characteristics are 'iq', 'power', 'speed', 'attack'
+class Card:
+    attr_name = ['iq', 'power', 'speed', 'attack']
+
+    def __init__(self, no, name, iq, power, speed, attack):
+        self.no = no
+        self.name = name
+        self.iq = iq
+        self.power = power
+        self.speed = speed
+        self.attack = attack
+
+    # card number and card name
+    def __repr__(self):
+        return f'<Card no:{self.no} name:{self.name}>'
+
+    # In each round, the winner is the one has the higher characteristic amount
+    def attack_by_attr(self, attr, other_card):
+        return True if eval('self.' + attr) > eval('other_card.' + attr) else False
+
+# person class
+class Person(Dice):
+    def __init__(self, name, cards):
+        self.name = name
+        self.chars = cards
+        self.score = 0
+        self.god_times = 1
+        self.resurrection_times = 1
+
+    # Return the card list and player select card
+    def select_card_and_attr(self):
+        card_index = self.select_card_by_no()
+        attr = self.select_card_attr()
+        return attr, card_index
+
+    # player select card by card number
+    def select_card_by_no(self):
+        no = input(f'{self.name} please select the card no.({",".join([card.no for card in self.chars])})：')
+        return self.search_card_by_no(no)
+
+    # player select characteristic
+    def select_card_attr(self):
+        return input(f'{self.name} please select the characteristic ({",".join(Card.attr_name)})：')
+
+    # Remove the cards which have player from the card list
+    def search_card_by_no(self, card_no):
+        for card in self.chars:
+            if card.no == card_no:
+                self.chars.remove(card)
+                return card
+
+
+class Game:
+    def __init__(self):
+        self.round = 0
+        self.next_first = None
+        self.card_numbers = 4
+        # The initial card (first)
+        self.card_list = [Card(*data) for data in card_data]
+        # Random 4 cards
+        # create player 1 and 2
+        self.person_1 = self.create_person('player 1')
+        self.person_2 = self.create_person('player 2')
+
+    # random distribute the card number evenly to the two players, card list
+    def create_person(self, person_name):
+        person_cards = []
+        for i in range(self.card_numbers):
+            person_cards.append(self.card_list.pop(random.randint(0, len(self.card_list) - 1)))
+
+        return Person(person_name, person_cards)
+
+    # Before game starts, print "Round number, Who got higher dice number who can play first
+    def get_first_hand(self, person_1, person_2):
+        self.round += 1
+        print(f'Round {self.round} starts')
+        if self.round == 1:
+            if person_1.dice() >= person_2.dice():
+                return True
+            else:
+                return False
+
+        return True if (self.next_first is self.person_1) else False
+
+    def play_game(self):
+        while self.person_1.chars and self.person_2.chars:
+            flag = self.get_first_hand(self.person_1, self.person_2)
+            if flag:
+                attr, card_1 = self.person_1.select_card_and_attr()
+                # card_2 = self.person_2.select_card_by_no()
+                if self.person_1.god_times == 1:
+                    god_flag = input(f'{self.person_1.name}, do you want to use God Spell? (yes or no)')
+                    if god_flag == 'yes':
+                        self.person_1.god_times = 0
+                        card_2 = God.hand_od_god(self.person_2)
+
+                    else:
+                        card_2 = self.person_2.select_card_by_no()
+                else:
+                    attr, card_1 = self.person_1.select_card_by_no()
+                ret = card_2.attack_by_attr(attr, card_1)
+                if ret:
+                    self.next_first = self.person_1
+                    self.person_1.score += 1
+                else:
+                    self.next_first = self.person_2
+                    self.person_2.score += 1
+
+                # God spell in over
+                # Res card
+                if self.person_1.resurrection_times == 1:
+                    if self.round != 1:
+                        # decide whether use Resurrect Spell
+                        card_flag = input(f'{self.person_1.name}, whether use Resurrect Spell?(yes or no)')
+                        if card_flag == 'yes':
+                            self.person_1.resurrection_times = 0
+                            card_2 = Resurrection.select_card_by_no(self.person_1)
+                            attr = self.person_1.select_card_attr()
+                        else:
+                            # select characteristic
+                            attr, card_1 = self.person_1.select_card_and_attr()
+                else:
+                    # attr, card_1 = self.person_1.select_card_and_attr()
+                    Resurrection.add_resurrection_card(card_1)
+                    Resurrection.add_resurrection_card(card_2)
+
+            else:
+                attr, card_2 = self.person_2.select_card_and_attr()
+                if self.person_2.god_times == 1:
+                    god_flag = input(f'{self.person_2.name}, do you want to use God Spell?(yes or no)')
+                    if god_flag == 'yes':
+                        self.person_2.god_times = 0
+                        card_1 = God.hand_od_god(self.person_1)
+                    else:
+                        attr, card_1 = self.person_1.select_card_by_no()
+                else:
+                    card_1 = self.person_1.select_card_by_no()
+                    ret = card_2.attack_by_attr(attr, card_1)
+                    if ret:
+                        self.next_first = self.person_2
+                        self.person_2.score += 1
+                    else:
+                        self.next_first = self.person_1
+                        self.person_1.score += 1
+
+                if self.person_2.resurrection_times == 1:
+                    card_flag = input(f'{self.person_2.name}, whether use Resurrect Spell?(yes or no)')
+                    if card_flag == 'yes':
+                        if self.round != 1:
+                            card_2 = Resurrection.select_card_by_no(self.person_2)
+                            attr = self.person_2.select_card_attr()
+                        else:
+                            # select the property
+                            attr, card_2 = self.person_2.select_card_and_attr()
+                else:
+                    # attr, card_2 = self.person_2.select_card_and_attr()
+                    Resurrection.add_resurrection_card(card_1)
+                    Resurrection.add_resurrection_card(card_2)
+
+        print(self.person_1.score)
+        print(self.person_2.score)
+
+
+if __name__ == '__main__':
+    g = Game()
+    g.play_game()
