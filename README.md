@@ -3,21 +3,13 @@ This repository will be updated regularly for my good-practice coding files in t
 
 ### Exercise 1
 
-City Council for City 'X' has decided to only give 10 parking passes on a first come basis for a busy street in City 'X'. The parking passes will only be provided on alternate working days of the week (Monday,Wednesday,Friday). Write a function that provides only one parking pass from the below list at a time whenever called in the program. Once a parking pass is issued it cannot be reused.
-The check whether the parking pass must be provided or not should be done as decorator function . This decorator function should a importable module function so that it can be reused in other parts of the program.
+paranthesis balancing: write a function that take a string of paranthesis at the input and returns the longestbalanced substring at the outputthe string is said to be balanced when the opening paranthesis has its corresponding matching closingparanthesis. Note that an opening paranthesis cannot match a closing paranthesis that comes before it andvice-versasample input :{{}}}{output : {{}}try and get the optimum big O notation (considering the worst case) and mention the reason for the same ina comment.
 
 ### Exercise 2
 
-The below code contains an error . Write appropriate comments in the code to explain which line(s) have error and what is the error
+Write a function that takes a list of cartesian co-ordinates (x,y) and returns the numbers of rectanlges formedby these co-ordinatiesa rectangle should have its four corners amongst the co-ordinates to be counted as a rectanlge. Onlyrectangles whos sides are parallel to the x and y axes to be considered.
 
-class GetterSetter():
-    def __init__(self,parameter):
-self.parameter = parameter
-@property
-def parameter(self): return self.parameter
-@parameter.setter
-def parameter(self,value): self.parameter = value
-obj = GetterSetter(1)
+sample input = coordinates = [ [0,0],[0,1],[1,1][1,0], [2,1][2,0],[3,1],[3,0] ]try and get the optimum big O notation (considering the worst case) and mention the reason for the same ina comment.
 
 ### Exercise 3
 
@@ -91,3 +83,13 @@ S1 = "aab" , S2 = "c*a*b" => true S1 = "aaa" , S2 = "a*" => true
 
 Development and enhancement of the performance of python library GNE in terms of input argument change from HTML to URL, implementation of asyncio for performance improvement.
 
+### Exercise 10
+
+Imagine that you want to schedule a meeting of a certain duration with a co-worker. You have access to yourcalendar and your co-worker's calendar (both of which contain your respective meetings for the day, in theform of [startTime,endTime] , as well as both of your daily working hours (i.e., the earliest and latest timesat which you're available for meetings every day, in the form of [earliestStartTime,latestEndTime]during which you could schedule the meeting.Write a function that takes in your calendar, your daily working hours, your co-worker's calendar, your co-worker's working hours, and the duration of the meeting that you want to schedule, and that returns a list ofall the time blocks (in the form of [startTime,endTime] during which you could schedule the meeting.Note that times will be given and should be returned in 24 hour clock. 
+
+For example: [8:30,23:59] andmeeting durations will always be in minutesSample InputYourCalendar = [['9:00', '10:30'], ['12:00', '13:00'], ['16:00', '18:00']]YourWorkingHours = ['9:00', '20:00']YourCoWorkersCalendar = [['10:00', '11:30'], ['12:30', '14:30'], ['14:30','15:00'], ['16:00', '17:00']]YourCoWorkersWorkingHours = ['10:00', '18:30']meetingDuration = 30Sample Output:[['11:30', '12:00'], ['15:00', '16:00'], ['18:00', '18:30']]
+
+### Exercise 11
+
+ou're given a non-empty array of arrays where each subarray holds three integers and represents a disk.These integers denote each disk's width, depth, and height, respectively. Your goal is to stack up the disks andto maximize the total height of the stack. A disk must have a strictly smaller width, depth, and height than anyother disk below it.Write a function that returns an array of the disks in the final stack, starting with the top disk and ending withthe bottom disk. Note that you can't rotate disks; 
+in other words, the integers in each subarray must represent[width, depth, height] at all timesSample Input[[2, 1, 2], [3, 2, 3], [2, 2, 8], [2, 3, 4], [1, 3, 1], [4, 4, 5]]Sample Output (Read the disks from left to right)[[4, 4, 5], [3, 2, 3], [2, 1, 2]]Explaination : 10 (5 + 3 + 2) is the tallest height we can get by stacking disksWhen more than combination equals the maximum height , all combinations must be present in the output.
