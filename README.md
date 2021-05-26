@@ -89,5 +89,5 @@ S1 = "aab" , S2 = "c*a*b" => true S1 = "aaa" , S2 = "a*" => true
 
 ### Exercise 9
 
-Development and enhancement of the performance of python library GNE
+Development and enhancement of the performance of python library GNE in terms of input argument change from HTML to URL, implementation of asyncio for performance improvement.
 
