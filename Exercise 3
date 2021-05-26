@@ -1,15 +1,22 @@
-Parking_list= [1101,1102,1103,1104,1105,1106,1107,1108,1109,1110]
-# 判断今天是星期几，Monday, Wednesday, Friday have parking; Others no parking
-# Random take a parking number in the list, check as decorator
+import random
 import datetime
-from random import choice
-today= datetime.datetime.today().weekday() # the coding you give for today is Tuesday....I dont know why
-# print(today)
 
-if today == 1 and 3 and 5:         # 判断变量是否为 python
-    flag = True              # 条件成立时设置标志为真
-    random_number = choice(Parking_list)
-    print(random_number)
-# 并输出欢迎信息
-else:
+class Choose_patient():
+    def __init__(self,batch_size):
+        self.batch_size = batch_size
+        self.patients = ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14','p15',
+'p16','p17','p18','p19','p20']
+        
+    def choose(self):
+        num = len(self.patients)//self.batch_size
+        for i in range(num):
+            a = i*self.batch_size
+            b = (i+1)*self.batch_size
+            p = self.patients[a:b]
+            print(random.sample(p,2))
+            print(datetime.datetime.now())
+            
+batch_size = 5
+cp = Choose_patient(batch_size)
+cp.choose()
     print('sorry, no parking')
